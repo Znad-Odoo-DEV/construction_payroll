@@ -1,0 +1,101 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lao_sheet,attendance.sheet labour-att officer,model_construction_attendance_sheet,group_labour_attendance,1,0,1,1
+access_lao_summary,attendance.summary labour-att officer,model_construction_attendance_summary,group_labour_attendance,1,0,0,0
+access_lao_summary_day,attendance.summary.day labour-att officer,model_construction_attendance_summary_day,group_labour_attendance,1,0,0,0
+access_lao_holiday,public.holiday labour-att officer,model_construction_public_holiday,group_labour_attendance,1,0,0,0
+access_lam_sheet,attendance.sheet labour-att manager,model_construction_attendance_sheet,group_labour_attendance_manager,1,1,1,1
+access_lam_summary,attendance.summary labour-att manager,model_construction_attendance_summary,group_labour_attendance_manager,1,1,1,1
+access_lam_summary_day,attendance.summary.day labour-att manager,model_construction_attendance_summary_day,group_labour_attendance_manager,1,1,1,1
+access_lam_holiday,public.holiday labour-att manager,model_construction_public_holiday,group_labour_attendance_manager,1,1,1,1
+access_sao_att,staff.attendance staff-att officer,model_construction_staff_attendance,group_staff_attendance,1,1,1,0
+access_sao_line,staff.attendance.line staff-att officer,model_construction_staff_attendance_line,group_staff_attendance,1,1,1,0
+access_sao_dist,staff.attendance.distribution staff-att officer,model_construction_staff_attendance_distribution,group_staff_attendance,1,1,1,0
+access_sao_day,staff.attendance.day staff-att officer,model_construction_staff_attendance_day,group_staff_attendance,1,1,1,0
+access_sao_wizard,staff.attendance.generate.wizard staff-att officer,model_construction_staff_attendance_generate_wizard,group_staff_attendance,1,1,1,0
+access_sao_project,staff.project staff-att officer,model_construction_staff_project,group_staff_attendance,1,0,0,0
+access_sao_holiday,public.holiday staff-att officer,model_construction_public_holiday,group_staff_attendance,1,0,0,0
+access_sam_att,staff.attendance staff-att manager,model_construction_staff_attendance,group_staff_attendance_manager,1,1,1,1
+access_sam_line,staff.attendance.line staff-att manager,model_construction_staff_attendance_line,group_staff_attendance_manager,1,1,1,1
+access_sam_dist,staff.attendance.distribution staff-att manager,model_construction_staff_attendance_distribution,group_staff_attendance_manager,1,1,1,1
+access_sam_day,staff.attendance.day staff-att manager,model_construction_staff_attendance_day,group_staff_attendance_manager,1,1,1,1
+access_sam_wizard,staff.attendance.generate.wizard staff-att manager,model_construction_staff_attendance_generate_wizard,group_staff_attendance_manager,1,1,1,1
+access_sam_project,staff.project staff-att manager,model_construction_staff_project,group_staff_attendance_manager,1,1,1,1
+access_sam_holiday,public.holiday staff-att manager,model_construction_public_holiday,group_staff_attendance_manager,1,1,1,1
+access_lpo_payslip,construction.payslip labour-pay officer,model_construction_payslip,group_labour_payroll,1,1,1,0
+access_lpo_payslip_project,construction.payslip.project labour-pay officer,model_construction_payslip_project,group_labour_payroll,1,1,1,0
+access_lpo_payslip_day,construction.payslip.day labour-pay officer,model_construction_payslip_day,group_labour_payroll,1,1,1,0
+access_lpo_batch,construction.salary.batch labour-pay officer,model_construction_salary_batch,group_labour_payroll,1,1,1,0
+access_lpo_batch_project,construction.salary.batch.project labour-pay officer,model_construction_salary_batch_project,group_labour_payroll,1,1,1,0
+access_lpo_attachment,construction.attachment labour-pay officer,model_construction_attachment,group_labour_payroll,1,1,1,0
+access_lpo_advance,construction.advance labour-pay officer,model_construction_advance,group_labour_payroll,1,1,1,0
+access_lpo_advance_inst,construction.advance.installment labour-pay officer,model_construction_advance_installment,group_labour_payroll,1,1,1,0
+access_lpo_leave,construction.leave.expense labour-pay officer,model_construction_leave_expense,group_labour_payroll,1,1,1,0
+access_lpo_fine,construction.fine labour-pay officer,model_construction_fine,group_labour_payroll,1,1,1,0
+access_lpo_eos,construction.end.of.service labour-pay officer,model_construction_end_of_service,group_labour_payroll,1,1,1,0
+access_lpo_hold,construction.on.hold labour-pay officer,model_construction_on_hold,group_labour_payroll,1,1,1,0
+access_lpo_holiday,public.holiday labour-pay officer,model_construction_public_holiday,group_labour_payroll,1,0,0,0
+access_lpo_attachment_type,attachment.type labour-pay officer,model_construction_attachment_type,group_labour_payroll,1,0,0,0
+access_lpo_dashboard,dashboard labour-pay officer,model_construction_payroll_dashboard,group_labour_payroll,1,1,1,1
+access_lpm_payslip,construction.payslip labour-pay manager,model_construction_payslip,group_labour_payroll_manager,1,1,1,1
+access_lpm_payslip_project,construction.payslip.project labour-pay manager,model_construction_payslip_project,group_labour_payroll_manager,1,1,1,1
+access_lpm_payslip_day,construction.payslip.day labour-pay manager,model_construction_payslip_day,group_labour_payroll_manager,1,1,1,1
+access_lpm_batch,construction.salary.batch labour-pay manager,model_construction_salary_batch,group_labour_payroll_manager,1,1,1,1
+access_lpm_batch_project,construction.salary.batch.project labour-pay manager,model_construction_salary_batch_project,group_labour_payroll_manager,1,1,1,1
+access_lpm_attachment,construction.attachment labour-pay manager,model_construction_attachment,group_labour_payroll_manager,1,1,1,1
+access_lpm_advance,construction.advance labour-pay manager,model_construction_advance,group_labour_payroll_manager,1,1,1,1
+access_lpm_advance_inst,construction.advance.installment labour-pay manager,model_construction_advance_installment,group_labour_payroll_manager,1,1,1,1
+access_lpm_leave,construction.leave.expense labour-pay manager,model_construction_leave_expense,group_labour_payroll_manager,1,1,1,1
+access_lpm_fine,construction.fine labour-pay manager,model_construction_fine,group_labour_payroll_manager,1,1,1,1
+access_lpm_eos,construction.end.of.service labour-pay manager,model_construction_end_of_service,group_labour_payroll_manager,1,1,1,1
+access_lpm_hold,construction.on.hold labour-pay manager,model_construction_on_hold,group_labour_payroll_manager,1,1,1,1
+access_lpm_holiday,public.holiday labour-pay manager,model_construction_public_holiday,group_labour_payroll_manager,1,1,1,1
+access_lpm_attachment_type,attachment.type labour-pay manager,model_construction_attachment_type,group_labour_payroll_manager,1,1,1,1
+access_lpm_dashboard,dashboard labour-pay manager,model_construction_payroll_dashboard,group_labour_payroll_manager,1,1,1,1
+access_spo_payslip,construction.payslip staff-pay officer,model_construction_payslip,group_staff_payroll,1,1,1,0
+access_spo_payslip_project,construction.payslip.project staff-pay officer,model_construction_payslip_project,group_staff_payroll,1,1,1,0
+access_spo_payslip_day,construction.payslip.day staff-pay officer,model_construction_payslip_day,group_staff_payroll,1,1,1,0
+access_spo_batch,construction.salary.batch staff-pay officer,model_construction_salary_batch,group_staff_payroll,1,1,1,0
+access_spo_batch_project,construction.salary.batch.project staff-pay officer,model_construction_salary_batch_project,group_staff_payroll,1,1,1,0
+access_spo_attachment,construction.attachment staff-pay officer,model_construction_attachment,group_staff_payroll,1,1,1,0
+access_spo_advance,construction.advance staff-pay officer,model_construction_advance,group_staff_payroll,1,1,1,0
+access_spo_advance_inst,construction.advance.installment staff-pay officer,model_construction_advance_installment,group_staff_payroll,1,1,1,0
+access_spo_leave,construction.leave.expense staff-pay officer,model_construction_leave_expense,group_staff_payroll,1,1,1,0
+access_spo_fine,construction.fine staff-pay officer,model_construction_fine,group_staff_payroll,1,1,1,0
+access_spo_eos,construction.end.of.service staff-pay officer,model_construction_end_of_service,group_staff_payroll,1,1,1,0
+access_spo_hold,construction.on.hold staff-pay officer,model_construction_on_hold,group_staff_payroll,1,1,1,0
+access_spo_project,staff.project staff-pay officer,model_construction_staff_project,group_staff_payroll,1,0,0,0
+access_spo_holiday,public.holiday staff-pay officer,model_construction_public_holiday,group_staff_payroll,1,0,0,0
+access_spo_attachment_type,attachment.type staff-pay officer,model_construction_attachment_type,group_staff_payroll,1,0,0,0
+access_spo_dashboard,dashboard staff-pay officer,model_construction_payroll_dashboard,group_staff_payroll,1,1,1,1
+access_spm_payslip,construction.payslip staff-pay manager,model_construction_payslip,group_staff_payroll_manager,1,1,1,1
+access_spm_payslip_project,construction.payslip.project staff-pay manager,model_construction_payslip_project,group_staff_payroll_manager,1,1,1,1
+access_spm_payslip_day,construction.payslip.day staff-pay manager,model_construction_payslip_day,group_staff_payroll_manager,1,1,1,1
+access_spm_batch,construction.salary.batch staff-pay manager,model_construction_salary_batch,group_staff_payroll_manager,1,1,1,1
+access_spm_batch_project,construction.salary.batch.project staff-pay manager,model_construction_salary_batch_project,group_staff_payroll_manager,1,1,1,1
+access_spm_attachment,construction.attachment staff-pay manager,model_construction_attachment,group_staff_payroll_manager,1,1,1,1
+access_spm_advance,construction.advance staff-pay manager,model_construction_advance,group_staff_payroll_manager,1,1,1,1
+access_spm_advance_inst,construction.advance.installment staff-pay manager,model_construction_advance_installment,group_staff_payroll_manager,1,1,1,1
+access_spm_leave,construction.leave.expense staff-pay manager,model_construction_leave_expense,group_staff_payroll_manager,1,1,1,1
+access_spm_fine,construction.fine staff-pay manager,model_construction_fine,group_staff_payroll_manager,1,1,1,1
+access_spm_eos,construction.end.of.service staff-pay manager,model_construction_end_of_service,group_staff_payroll_manager,1,1,1,1
+access_spm_hold,construction.on.hold staff-pay manager,model_construction_on_hold,group_staff_payroll_manager,1,1,1,1
+access_spm_project,staff.project staff-pay manager,model_construction_staff_project,group_staff_payroll_manager,1,1,1,1
+access_spm_holiday,public.holiday staff-pay manager,model_construction_public_holiday,group_staff_payroll_manager,1,1,1,1
+access_spm_attachment_type,attachment.type staff-pay manager,model_construction_attachment_type,group_staff_payroll_manager,1,1,1,1
+access_spm_dashboard,dashboard staff-pay manager,model_construction_payroll_dashboard,group_staff_payroll_manager,1,1,1,1
+access_lpm_advance_wizard,construction.payslip.advance.wizard lpm,model_construction_payslip_advance_wizard,group_labour_payroll_manager,1,1,1,1
+access_spm_advance_wizard,construction.payslip.advance.wizard spm,model_construction_payslip_advance_wizard,group_staff_payroll_manager,1,1,1,1
+access_lpm_construction_expense_type,construction.expense.type lpm,model_construction_expense_type,group_labour_payroll_manager,1,1,1,1
+access_lpm_construction_expense_type_account,construction.expense.type.account lpm,model_construction_expense_type_account,group_labour_payroll_manager,1,1,1,1
+access_spm_construction_expense_type,construction.expense.type spm,model_construction_expense_type,group_staff_payroll_manager,1,1,1,1
+access_spm_construction_expense_type_account,construction.expense.type.account spm,model_construction_expense_type_account,group_staff_payroll_manager,1,1,1,1
+access_lp_expense_type_read,construction.expense.type read,model_construction_expense_type,group_labour_payroll,1,0,0,0
+access_lp_expense_type_account_read,construction.expense.type.account read,model_construction_expense_type_account,group_labour_payroll,1,0,0,0
+access_sp_expense_type_read,construction.expense.type read,model_construction_expense_type,group_staff_payroll,1,0,0,0
+access_sp_expense_type_account_read,construction.expense.type.account read,model_construction_expense_type_account,group_staff_payroll,1,0,0,0
+access_lpm_generate_wizard,construction.payslip.generate.wizard lpm,model_construction_payslip_generate_wizard,group_labour_payroll_manager,1,1,1,1
+access_spm_generate_wizard,construction.payslip.generate.wizard spm,model_construction_payslip_generate_wizard,group_staff_payroll_manager,1,1,1,1
+access_lpo_print_wizard,construction.payslip.print.wizard lpo,model_construction_payslip_print_wizard,group_labour_payroll,1,1,1,1
+access_lpm_print_wizard,construction.payslip.print.wizard lpm,model_construction_payslip_print_wizard,group_labour_payroll_manager,1,1,1,1
+access_spo_print_wizard,construction.payslip.print.wizard spo,model_construction_payslip_print_wizard,group_staff_payroll,1,1,1,1
+access_spm_print_wizard,construction.payslip.print.wizard spm,model_construction_payslip_print_wizard,group_staff_payroll_manager,1,1,1,1

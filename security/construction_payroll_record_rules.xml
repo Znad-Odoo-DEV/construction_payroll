@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="construction_staff_project_company_rule" model="ir.rule">
+        <field name="name">Construction Staff Project: multi-company</field>
+        <field name="model_id" ref="model_construction_staff_project"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_public_holiday_company_rule" model="ir.rule">
+        <field name="name">Construction Public Holiday: multi-company</field>
+        <field name="model_id" ref="model_construction_public_holiday"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_attendance_sheet_company_rule" model="ir.rule">
+        <field name="name">Construction Attendance Sheet: multi-company</field>
+        <field name="model_id" ref="model_construction_attendance_sheet"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- Labour Attendance Officers may delete attendance sheets only while they
+         are still New (this rule applies to unlink only; read is unrestricted
+         through the global company rule above). Managers are not covered by
+         this rule, so they can delete in any state. -->
+    <record id="construction_attendance_sheet_officer_unlink_rule" model="ir.rule">
+        <field name="name">Construction Attendance Sheet: officer deletes only New</field>
+        <field name="model_id" ref="model_construction_attendance_sheet"/>
+        <field name="groups" eval="[(4, ref('group_labour_attendance'))]"/>
+        <field name="domain_force">[('state', '=', 'new')]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Managers delete in any state. Record rules are OR-ed across a user's
+         groups, so this permissive unlink rule lets anyone who is ALSO a
+         Manager (including admins, who imply the Manager group) delete beyond
+         New - otherwise the officer rule above would restrict them too. -->
+    <record id="construction_attendance_sheet_manager_unlink_rule" model="ir.rule">
+        <field name="name">Construction Attendance Sheet: manager deletes any</field>
+        <field name="model_id" ref="model_construction_attendance_sheet"/>
+        <field name="groups" eval="[(4, ref('group_labour_attendance_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="construction_staff_attendance_company_rule" model="ir.rule">
+        <field name="name">Construction Staff Attendance: multi-company</field>
+        <field name="model_id" ref="model_construction_staff_attendance"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_attachment_company_rule" model="ir.rule">
+        <field name="name">Construction Attachment: multi-company</field>
+        <field name="model_id" ref="model_construction_attachment"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_payslip_company_rule" model="ir.rule">
+        <field name="name">Construction Payslip: multi-company</field>
+        <field name="model_id" ref="model_construction_payslip"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_salary_batch_company_rule" model="ir.rule">
+        <field name="name">Construction Salary Batch: multi-company</field>
+        <field name="model_id" ref="model_construction_salary_batch"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_advance_company_rule" model="ir.rule">
+        <field name="name">Construction Advance: multi-company</field>
+        <field name="model_id" ref="model_construction_advance"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_leave_expense_company_rule" model="ir.rule">
+        <field name="name">Construction Leave Expense: multi-company</field>
+        <field name="model_id" ref="model_construction_leave_expense"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_fine_company_rule" model="ir.rule">
+        <field name="name">Construction Fine: multi-company</field>
+        <field name="model_id" ref="model_construction_fine"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_eos_company_rule" model="ir.rule">
+        <field name="name">Construction End of Service: multi-company</field>
+        <field name="model_id" ref="model_construction_end_of_service"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="construction_on_hold_company_rule" model="ir.rule">
+        <field name="name">Construction On-Hold: multi-company</field>
+        <field name="model_id" ref="model_construction_on_hold"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ==================================================================
+         Labour vs staff separation. GROUP rules (not global), so they are
+         OR-ed: each side's Officer and Manager both carry the same filter,
+         and nobody is in both sides, so each user sees only their workforce.
+         Staff = Office/Engineer employees (hr.employee.construction_is_office_staff);
+         everyone else
+         counts as labour.
+         ================================================================== -->
+
+    <record id="construction_payslip_labour_rule" model="ir.rule">
+        <field name="name">Construction Payslip: labour only</field>
+        <field name="model_id" ref="model_construction_payslip"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_payslip_staff_rule" model="ir.rule">
+        <field name="name">Construction Payslip: staff only</field>
+        <field name="model_id" ref="model_construction_payslip"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_batch_labour_rule" model="ir.rule">
+        <field name="name">Construction Salary Batch: labour only</field>
+        <field name="model_id" ref="model_construction_salary_batch"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('is_staff', '=', False)]</field>
+    </record>
+    <record id="construction_batch_staff_rule" model="ir.rule">
+        <field name="name">Construction Salary Batch: staff only</field>
+        <field name="model_id" ref="model_construction_salary_batch"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('is_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_advance_labour_rule" model="ir.rule">
+        <field name="name">Construction Advance: labour only</field>
+        <field name="model_id" ref="model_construction_advance"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_advance_staff_rule" model="ir.rule">
+        <field name="name">Construction Advance: staff only</field>
+        <field name="model_id" ref="model_construction_advance"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_leave_expense_labour_rule" model="ir.rule">
+        <field name="name">Construction Leave Expense: labour only</field>
+        <field name="model_id" ref="model_construction_leave_expense"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_leave_expense_staff_rule" model="ir.rule">
+        <field name="name">Construction Leave Expense: staff only</field>
+        <field name="model_id" ref="model_construction_leave_expense"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_fine_labour_rule" model="ir.rule">
+        <field name="name">Construction Fine: labour only</field>
+        <field name="model_id" ref="model_construction_fine"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_fine_staff_rule" model="ir.rule">
+        <field name="name">Construction Fine: staff only</field>
+        <field name="model_id" ref="model_construction_fine"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_eos_labour_rule" model="ir.rule">
+        <field name="name">Construction End of Service: labour only</field>
+        <field name="model_id" ref="model_construction_end_of_service"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_eos_staff_rule" model="ir.rule">
+        <field name="name">Construction End of Service: staff only</field>
+        <field name="model_id" ref="model_construction_end_of_service"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+    <record id="construction_on_hold_labour_rule" model="ir.rule">
+        <field name="name">Construction On-Hold: labour only</field>
+        <field name="model_id" ref="model_construction_on_hold"/>
+        <field name="groups" eval="[(4, ref('group_labour_payroll')), (4, ref('group_labour_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', False)]</field>
+    </record>
+    <record id="construction_on_hold_staff_rule" model="ir.rule">
+        <field name="name">Construction On-Hold: staff only</field>
+        <field name="model_id" ref="model_construction_on_hold"/>
+        <field name="groups" eval="[(4, ref('group_staff_payroll')), (4, ref('group_staff_payroll_manager'))]"/>
+        <field name="domain_force">[('employee_id.construction_is_office_staff', '=', True)]</field>
+    </record>
+
+</odoo>
