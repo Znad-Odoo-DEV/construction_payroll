@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Not bound under Print: the print wizard is, and it asks for
+         the language and the attendance report before calling this. -->
+    <record id="action_report_construction_payslip" model="ir.actions.report">
+        <field name="name">Payslip</field>
+        <field name="model">construction.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">construction_payroll.report_construction_payslip</field>
+        <field name="report_file">construction_payroll.report_construction_payslip</field>
+        <field name="print_report_name">'Payslip - %s' % (object.name or '')</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_construction_payslip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-set="i" t-value="info[doc.id]"/>
+                    <t t-set="col" t-value="doc.company_id.primary_color or '#1f3a5f'"/>
+                    <t t-set="cur" t-value="doc.currency_id"/>
+                    <t t-set="end" t-value="'left' if ar else 'right'"/>
+                    <t t-set="start" t-value="'right' if ar else 'left'"/>
+                    <div class="page construction_ps" t-att-dir="'rtl' if ar else 'ltr'"
+                         t-attf-style="position:relative;font-size:10pt;text-align:#{start};">
+                        <style>
+                            .construction_ps table { width: 100%; border-collapse: collapse; }
+                            .construction_ps .sec { color: #fff; font-weight: bold; padding: 4px 8px;
+                                           margin-top: 12px; font-size: 10pt; }
+                            .construction_ps .kv td { padding: 3px 8px; border-bottom: 1px solid #e3e6ea; }
+                            .construction_ps .kv td.k { color: #5f6b7a; width: 22%; }
+                            .construction_ps .kv td.v { font-weight: bold; width: 28%; }
+                            .construction_ps .grid th { background: #eef1f5; padding: 4px 6px;
+                                               border: 1px solid #cfd5dc; font-size: 8.5pt; }
+                            .construction_ps .grid td { padding: 3px 6px; border: 1px solid #dde1e6; }
+                            .construction_ps .grid tr.tot td { background: #eef1f5; font-weight: bold; }
+                            .construction_ps .att td, .construction_ps .att th { font-size: 8pt; padding: 2px 4px; }
+                            .construction_ps tr.off td { background: #f0f0f0; }
+                            .construction_ps tr.miss td { background: #fde3e1; }
+                            .construction_ps tr { page-break-inside: avoid; }
+                        </style>
+
+                        <!-- PAID stamp -->
+                        <div t-if="doc.state == 'paid'"
+                             t-attf-style="position:absolute;top:8px;#{end}:10px;border:3px solid #2e9e5b;color:#2e9e5b;font-size:20pt;font-weight:bold;padding:2px 16px;-webkit-transform:rotate(-12deg);opacity:0.75;">
+                            <t t-out="L['paid']"/>
+                        </div>
+
+                        <!-- Title -->
+                        <div t-attf-style="border-bottom:3px solid #{col};padding-bottom:6px;">
+                            <span t-attf-style="font-size:20pt;font-weight:bold;color:#{col};" t-out="L['title']"/>
+                            <span style="font-size:13pt;color:#5f6b7a;">&#160;&#160;<t t-out="i['period_title']"/></span>
+                        </div>
+
+                        <!-- Employee -->
+                        <table style="margin-top:10px;">
+                            <tr>
+                                <td t-if="doc.employee_avatar" style="width:92px;vertical-align:top;">
+                                    <img t-att-src="image_data_uri(doc.employee_avatar)"
+                                         style="width:82px;height:82px;border:1px solid #cfd5dc;"/>
+                                </td>
+                                <td style="vertical-align:top;">
+                                    <table class="kv">
+                                        <tr>
+                                            <td class="k" t-out="L['employee']"/>
+                                            <td class="v" t-out="doc.employee_id.name"/>
+                                            <td class="k" t-out="L['company']"/>
+                                            <td class="v" t-out="doc.company_id.name"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="k" t-out="L['employee_id']"/>
+                                            <td class="v" t-out="doc.employee_code"/>
+                                            <td class="k" t-out="L['batch']"/>
+                                            <td class="v" t-out="doc.batch_id.display_name"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="k" t-out="L['attendance_id']"/>
+                                            <td class="v" t-out="doc.employee_id.sudo().barcode"/>
+                                            <td class="k" t-out="L['sheet']"/>
+                                            <td class="v" t-out="doc.attendance_sheet_id.display_name"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="k" t-out="L['designation']"/>
+                                            <td class="v" t-out="doc.designation"/>
+                                            <td class="k" t-out="L['period']"/>
+                                            <td class="v">
+                                                <span t-field="doc.from_date"/> - <span t-field="doc.to_date"/>
+                                                (<t t-out="doc.days"/>)
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Contract -->
+                        <div class="sec" t-attf-style="background:#{col};" t-out="L['contract']"/>
+                        <table class="kv">
+                            <tr>
+                                <td class="k" t-out="L['basic']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.basic_salary"/></td>
+                                <td class="k" t-out="L['other']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.other_allowance"/></td>
+                            </tr>
+                            <tr>
+                                <td class="k" t-out="L['house']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.house_allowance"/></td>
+                                <td class="k" t-out="L['gross']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.gross_salary"/></td>
+                            </tr>
+                            <tr>
+                                <td class="k" t-out="L['transport']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.transport_allowance"/></td>
+                                <td class="k" t-out="L['rate_day']"/>
+                                <td class="v" t-attf-style="text-align:#{end};"><span t-field="doc.rate_per_day"/></td>
+                            </tr>
+                            <tr>
+                                <td class="k" t-out="L['ot_rate_reg']"/>
+                                <td class="v" t-attf-style="text-align:#{end};" t-out="'%.2f' % doc.ot_rate_regular"/>
+                                <td class="k" t-out="L['ot_rate_off']"/>
+                                <td class="v" t-attf-style="text-align:#{end};" t-out="'%.2f' % doc.ot_rate_off"/>
+                            </tr>
+                        </table>
+
+                        <!-- Salary and work entries -->
+                        <div class="sec" t-attf-style="background:#{col};" t-out="L['work']"/>
+                        <table class="grid">
+                            <thead>
+                                <tr>
+                                    <th t-attf-style="text-align:#{start};" t-out="L['item']"/>
+                                    <th t-attf-style="text-align:#{end};width:20%;" t-out="L['qty']"/>
+                                    <th t-attf-style="text-align:#{end};width:25%;" t-out="L['amount']"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <t t-out="L['attendance_days']"/>
+                                        <span t-if="doc.advance_days" style="color:#5f6b7a;">
+                                            (<t t-out="L['advance_in']"/>: <t t-out="'%.2f' % doc.advance_days"/>)
+                                        </span>
+                                    </td>
+                                    <td t-attf-style="text-align:#{end};" t-out="'%.2f' % doc.total_attendance"/>
+                                    <td t-attf-style="text-align:#{end};"><span t-field="doc.total_salary"/></td>
+                                </tr>
+                                <tr>
+                                    <td t-out="L['ot_reg']"/>
+                                    <td t-attf-style="text-align:#{end};" t-out="'%.2f' % doc.overtime_reg"/>
+                                    <td t-attf-style="text-align:#{end};"><span t-field="doc.overtime_reg_amount"/></td>
+                                </tr>
+                                <tr>
+                                    <td t-out="L['ot_off']"/>
+                                    <td t-attf-style="text-align:#{end};" t-out="'%.2f' % doc.overtime_off"/>
+                                    <td t-attf-style="text-align:#{end};"><span t-field="doc.overtime_off_amount"/></td>
+                                </tr>
+                                <tr class="tot">
+                                    <td t-out="L['ot_total']"/>
+                                    <td t-attf-style="text-align:#{end};" t-out="'%.2f' % (doc.overtime_reg + doc.overtime_off)"/>
+                                    <td t-attf-style="text-align:#{end};"><span t-field="doc.overtime_salary"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Salary attachments -->
+                        <t t-if="doc.attachment_ids">
+                            <div class="sec" t-attf-style="background:#{col};" t-out="L['attachments']"/>
+                            <table class="grid">
+                                <thead>
+                                    <tr>
+                                        <th t-attf-style="text-align:#{start};width:28%;" t-out="L['type']"/>
+                                        <th t-attf-style="text-align:#{start};" t-out="L['item']"/>
+                                        <th t-attf-style="text-align:#{end};width:25%;" t-out="L['amount']"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.attachment_ids" t-as="att">
+                                        <td t-out="att.type_id.display_name"/>
+                                        <td t-out="att.name"/>
+                                        <td t-attf-style="text-align:#{end};"><span t-field="att.signed_value"/></td>
+                                    </tr>
+                                    <tr class="tot">
+                                        <td colspan="2" t-out="L['adjustment']"/>
+                                        <td t-attf-style="text-align:#{end};"><span t-field="doc.salary_adjustment"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Net -->
+                        <table style="margin-top:12px;">
+                            <tr>
+                                <td t-attf-style="background:#{col};color:#fff;font-size:13pt;font-weight:bold;padding:8px 12px;"
+                                    t-out="L['net']"/>
+                                <td t-attf-style="background:#{col};color:#fff;font-size:15pt;font-weight:bold;padding:8px 12px;text-align:#{end};">
+                                    <span t-field="doc.net_amount"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Project distribution -->
+                        <t t-if="i['projects']">
+                            <div class="sec" t-attf-style="background:#{col};" t-out="L['projects']"/>
+                            <table class="grid" style="font-size:8.5pt;">
+                                <thead>
+                                    <tr>
+                                        <th t-attf-style="text-align:#{start};" t-out="L['project']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['days']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['salary']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['ot_reg_h']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['ot_off_h']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['overtime']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['total']"/>
+                                        <th t-attf-style="text-align:#{end};" t-out="L['share']"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="i['projects']" t-as="p">
+                                        <td t-out="p.project_id.display_name"/>
+                                        <td t-attf-style="text-align:#{end};" t-out="'%.2f' % p.total_attendance"/>
+                                        <td t-attf-style="text-align:#{end};"><span t-field="p.salary_amount"/></td>
+                                        <td t-attf-style="text-align:#{end};" t-out="'%.2f' % p.total_overtime_reg"/>
+                                        <td t-attf-style="text-align:#{end};" t-out="'%.2f' % p.total_overtime_off"/>
+                                        <td t-attf-style="text-align:#{end};"><span t-field="p.total_overtime_amount"/></td>
+                                        <td t-attf-style="text-align:#{end};"><span t-field="p.total_amount"/></td>
+                                        <td t-attf-style="text-align:#{end};"><t t-out="'%.1f' % p.share"/>&#37;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- The chart, drawn with table cells: the PDF
+                                 engine has no flexbox. -->
+                            <t t-if="i['chart']">
+                                <div style="font-weight:bold;margin-top:10px;margin-bottom:4px;" t-out="L['chart']"/>
+                                <table style="font-size:8.5pt;">
+                                    <tr t-foreach="i['chart']" t-as="c">
+                                        <td style="width:28%;padding:3px 6px;" t-out="c['name']"/>
+                                        <td style="width:44%;padding:3px 0;">
+                                            <div style="background:#e9ecef;height:14px;width:100%;">
+                                                <div t-attf-style="background:#{c['colour']};height:14px;width:#{c['width']}%;float:#{start};"/>
+                                            </div>
+                                        </td>
+                                        <td t-attf-style="width:28%;padding:3px 6px;text-align:#{end};white-space:nowrap;">
+                                            <t t-out="'%.2f' % c['days']"/> <t t-out="L['days']"/>
+                                            &#160;|&#160; <b><t t-out="'%.1f' % c['share']"/>&#37;</b>
+                                            &#160;|&#160; <span t-out="c['amount']"
+                                                  t-options='{"widget": "monetary", "display_currency": cur}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                        </t>
+
+                        <!-- Notes -->
+                        <t t-if="doc.note">
+                            <div class="sec" t-attf-style="background:#{col};" t-out="L['notes']"/>
+                            <div style="padding:6px 8px;border:1px solid #dde1e6;white-space:pre-wrap;" t-out="doc.note"/>
+                        </t>
+
+                        <!-- Attendance report, on its own page -->
+                        <t t-if="with_attendance">
+                            <div style="page-break-before:always;"/>
+                            <div t-attf-style="border-bottom:3px solid #{col};padding-bottom:6px;">
+                                <span t-attf-style="font-size:18pt;font-weight:bold;color:#{col};" t-out="L['att_title']"/>
+                                <span style="font-size:12pt;color:#5f6b7a;">&#160;&#160;<t t-out="i['period_title']"/></span>
+                            </div>
+                            <table class="kv" style="margin-top:8px;">
+                                <tr>
+                                    <td class="k" t-out="L['employee']"/>
+                                    <td class="v" t-out="doc.employee_id.name"/>
+                                    <td class="k" t-out="L['employee_id']"/>
+                                    <td class="v" t-out="doc.employee_code"/>
+                                </tr>
+                                <tr>
+                                    <td class="k" t-out="L['sheet']"/>
+                                    <td class="v" t-out="doc.attendance_sheet_id.display_name"/>
+                                    <td class="k" t-out="L['attendance_id']"/>
+                                    <td class="v" t-out="doc.employee_id.sudo().barcode"/>
+                                </tr>
+                            </table>
+                            <p t-if="not i['days']" style="margin-top:12px;" t-out="L['no_days']"/>
+                            <t t-if="i['days']">
+                                <table class="grid att" style="margin-top:10px;">
+                                    <thead>
+                                        <tr>
+                                            <th t-out="L['date']"/>
+                                            <th t-out="L['day']"/>
+                                            <th t-out="L['project']"/>
+                                            <th t-out="L['check_in']"/>
+                                            <th t-out="L['check_out']"/>
+                                            <th t-out="L['worked_hours']"/>
+                                            <th t-out="L['overtime']"/>
+                                            <th t-out="L['day_earned']"/>
+                                            <th t-out="L['status']"/>
+                                            <th t-out="L['off_day']"/>
+                                            <th t-out="L['missing']"/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="i['days']" t-as="d"
+                                            t-att-class="'miss' if d['missing_checkout'] else ('off' if d['is_off_day'] else '')">
+                                            <td style="white-space:nowrap;"><span t-out="d['date']" t-options='{"widget": "date"}'/></td>
+                                            <td t-out="d['day']"/>
+                                            <td t-out="d['project']"/>
+                                            <td style="text-align:center;" t-out="d['check_in']"/>
+                                            <td style="text-align:center;" t-out="d['check_out']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % d['worked_hours']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % d['overtime']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % d['day_ratio']"/>
+                                            <td t-out="d['status']"/>
+                                            <td style="text-align:center;" t-out="L['yes'] if d['is_off_day'] else ''"/>
+                                            <td style="text-align:center;" t-out="L['yes'] if d['missing_checkout'] else ''"/>
+                                        </tr>
+                                        <tr class="tot">
+                                            <td colspan="5" t-out="L['total']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % i['totals']['worked_hours']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % i['totals']['overtime']"/>
+                                            <td style="text-align:center;" t-out="'%.2f' % i['totals']['day_ratio']"/>
+                                            <td colspan="3"/>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="grid" style="margin-top:10px;">
+                                    <tr>
+                                        <th t-out="L['present_days']"/>
+                                        <th t-out="L['off_days']"/>
+                                        <th t-out="L['absent_days']"/>
+                                        <th t-out="L['missing_days']"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;font-weight:bold;" t-out="i['totals']['present']"/>
+                                        <td style="text-align:center;font-weight:bold;" t-out="i['totals']['off']"/>
+                                        <td style="text-align:center;font-weight:bold;" t-out="i['totals']['absent']"/>
+                                        <td style="text-align:center;font-weight:bold;" t-out="i['totals']['missing']"/>
+                                    </tr>
+                                </table>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
