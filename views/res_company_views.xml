@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_company_form_construction_payroll" model="ir.ui.view">
+        <field name="name">res.company.form.construction.payroll</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <!-- Same reason as the settings view: this one adds construction_* fields to the
+             core company form, so it must be deactivatable before an upgrade
+             dump. Declaring active here means a module update turns it back on. -->
+        <field name="active" eval="True"/>
+        <field name="arch" type="xml">
+            <sheet position="inside">
+                <group string="Payroll Configuration" name="construction_payroll">
+                    <field name="construction_company_code"/>
+                    <field name="construction_company_abbr"/>
+                    <field name="construction_payroll_start_day"/>
+                    <field name="construction_ot_days_per_month"/>
+                    <field name="construction_ot_hours_per_day"/>
+                    <field name="construction_ot_factor_regular"/>
+                    <field name="construction_ot_factor_off"/>
+                    <field name="construction_salary_journal_id"
+                           options="{'no_create': True}"/>
+                </group>
+            </sheet>
+        </field>
+    </record>
+
+</odoo>

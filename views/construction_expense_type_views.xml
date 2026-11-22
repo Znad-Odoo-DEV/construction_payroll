@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_construction_expense_type_list" model="ir.ui.view">
+        <field name="name">construction.expense.type.list</field>
+        <field name="model">construction.expense.type</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Expense Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_count" string="Companies set"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_construction_expense_type_form" model="ir.ui.view">
+        <field name="name">construction.expense.type.form</field>
+        <field name="model">construction.expense.type</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Expense Type">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Per Company" name="companies">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="company_id"/>
+                                    <field name="account_id"/>
+                                    <field name="product_id"/>
+                                </list>
+                            </field>
+                            <p class="text-muted">
+                                A company with no line here cannot bill this
+                                kind of expense, and says so when somebody
+                                tries.
+                            </p>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_expense_type" model="ir.actions.act_window">
+        <field name="name">Expense Types</field>
+        <field name="res_model">construction.expense.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Set what payroll expenses post to</p>
+            <p>
+                One record per kind of expense, and one line per company saying
+                which account and product it is billed on.
+            </p>
+        </field>
+    </record>
+
+</odoo>

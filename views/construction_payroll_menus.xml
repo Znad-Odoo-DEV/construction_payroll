@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_construction_payroll_root"
+              name="Construction Payroll"
+              web_icon="construction_payroll,static/description/icon.png"
+              sequence="70"
+              groups="group_labour_attendance,group_labour_attendance_manager,group_staff_attendance,group_staff_attendance_manager,group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_dashboard"
+              name="Payroll Dashboard"
+              parent="menu_construction_payroll_root"
+              action="action_construction_payroll_dashboard_owl"
+              sequence="5"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <!-- The native employee, from inside the payroll app: it carries the
+         workforce classification, the overtime terms and the allowances. -->
+    <menuitem id="menu_construction_payroll_people"
+              name="Employees"
+              parent="menu_construction_payroll_root"
+              sequence="10"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_hr_employees"
+              name="Employees"
+              parent="menu_construction_payroll_people"
+              action="action_hr_employee_construction_payroll"
+              sequence="10"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_attendance"
+              name="Attendance"
+              parent="menu_construction_payroll_root"
+              sequence="20"
+              groups="group_labour_attendance,group_labour_attendance_manager,group_staff_attendance,group_staff_attendance_manager"/>
+
+    <menuitem id="menu_construction_payroll_attendance_sheet"
+              name="Attendance Per Month"
+              parent="menu_construction_payroll_attendance"
+              action="action_construction_attendance_sheet"
+              sequence="20"
+              groups="group_labour_attendance,group_labour_attendance_manager"/>
+
+    <menuitem id="menu_construction_payroll_staff_attendance"
+              name="Staff Attendance"
+              parent="menu_construction_payroll_attendance"
+              action="action_construction_staff_attendance"
+              sequence="30"
+              groups="group_staff_attendance,group_staff_attendance_manager"/>
+
+    <menuitem id="menu_construction_payroll_batches"
+              name="Salary Batches"
+              parent="menu_construction_payroll_root"
+              action="action_construction_salary_batch"
+              sequence="30"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_payslips_root"
+              name="Payslips"
+              parent="menu_construction_payroll_root"
+              sequence="40"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_payslips"
+              name="Payslips"
+              parent="menu_construction_payroll_payslips_root"
+              action="action_construction_payslip"
+              sequence="10"/>
+
+    <menuitem id="menu_construction_payroll_attachments"
+              name="Attachments List"
+              parent="menu_construction_payroll_payslips_root"
+              action="action_construction_attachment"
+              sequence="20"/>
+
+    <menuitem id="menu_construction_payroll_expenses"
+              name="Employees Expenses"
+              parent="menu_construction_payroll_root"
+              sequence="50"
+              groups="group_labour_payroll,group_labour_payroll_manager,group_staff_payroll,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_advance"
+              name="Advance Salaries"
+              parent="menu_construction_payroll_expenses"
+              action="action_construction_advance"
+              sequence="10"/>
+
+    <menuitem id="menu_construction_payroll_leave_expense"
+              name="Leave Expenses"
+              parent="menu_construction_payroll_expenses"
+              action="action_construction_leave_expense"
+              sequence="30"/>
+
+    <menuitem id="menu_construction_payroll_fine"
+              name="Fines &amp; Deductions"
+              parent="menu_construction_payroll_expenses"
+              action="action_construction_fine"
+              sequence="40"/>
+
+    <menuitem id="menu_construction_payroll_eos"
+              name="End of Service"
+              parent="menu_construction_payroll_expenses"
+              action="action_construction_eos"
+              sequence="50"/>
+
+    <menuitem id="menu_construction_payroll_on_hold"
+              name="On-Hold Amounts"
+              parent="menu_construction_payroll_expenses"
+              action="action_construction_on_hold"
+              sequence="60"/>
+
+    <!-- Configuration is a Manager-only area. Public Holidays is shared by all
+         four Manager groups; Attachment Types is payroll-only, so it is scoped
+         to the payroll Managers who carry attachment.type access. -->
+    <menuitem id="menu_construction_payroll_config"
+              name="Configuration"
+              parent="menu_construction_payroll_root"
+              sequence="90"
+              groups="group_labour_attendance_manager,group_staff_attendance_manager,group_labour_payroll_manager,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_config_holidays"
+              name="Public Holidays"
+              parent="menu_construction_payroll_config"
+              action="action_construction_public_holiday"
+              sequence="10"
+              groups="group_labour_attendance_manager,group_staff_attendance_manager,group_labour_payroll_manager,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_config_attachment_types"
+              name="Attachment Types"
+              parent="menu_construction_payroll_config"
+              action="action_construction_attachment_type"
+              sequence="20"
+              groups="group_labour_payroll_manager,group_staff_payroll_manager"/>
+
+    <menuitem id="menu_construction_payroll_config_expense_types"
+              name="Expense Types"
+              parent="menu_construction_payroll_config"
+              action="action_construction_expense_type"
+              sequence="30"
+              groups="group_labour_payroll_manager,group_staff_payroll_manager"/>
+
+</odoo>

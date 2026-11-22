@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_employee_form_construction_payroll" model="ir.ui.view">
+        <field name="name">hr.employee.form.construction.payroll</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <!-- Deactivatable before an upgrade dump, like the other views that
+             add construction_* fields to a core form. A module update turns it back on. -->
+        <field name="active" eval="True"/>
+        <field name="arch" type="xml">
+            <field name="job_title" position="after">
+                <field name="construction_analytic_account_id"
+                       options="{'no_create': True}"
+                       groups="hr.group_hr_user"/>
+                <field name="construction_workforce"/>
+                <!-- hr_payroll keeps this field on the Payroll tab and marks
+                     it base.group_no_one, so its own node shows in developer
+                     mode only. It is the company's own number for the
+                     employee - what the payslips print and what the imports
+                     match on - and the payslip generation reads it to choose
+                     the batch: a value is WPS, none is cash. So it is shown
+                     here as well, on the tab everybody opens, behind nothing
+                     but the field's own group. A node of our own rather than
+                     an edit of theirs: their view may be applied after this
+                     one, and an anchor on it would then not be found.
+
+                     The WPS code is Identification No, on the Personal tab,
+                     below. It follows this number, and it is
+                     what decides WPS or cash. -->
+                <field name="registration_number" string="Employee ID"/>
+            </field>
+            <!-- Identification No is the one field Odoo's UAE payroll reads
+                 for the employee's WPS identifier, so it is labelled for what
+                 HR has to type into it, and the Emirates ID has a field of
+                 its own right under it. Anchored on the
+                 group as well as on the name: a field name alone does not
+                 say which node. -->
+            <xpath expr="//group[@name='citizenship']/field[@name='identification_id']"
+                   position="attributes">
+                <!-- The code is the Employee ID: it is carried here from
+                     the Work tab, so there is nothing to type unless an
+                     employee's code really is another number. -->
+                <attribute name="string">WPS Code</attribute>
+                <attribute name="placeholder">Empty: the payslip goes to the cash batch</attribute>
+            </xpath>
+            <xpath expr="//group[@name='citizenship']/field[@name='identification_id']"
+                   position="after">
+                <field name="construction_emirates_id" placeholder="784-0000-0000000-0"/>
+            </xpath>
+            <notebook position="inside">
+                <page string="Payroll" name="construction_payroll"
+                      groups="construction_payroll.group_labour_payroll,construction_payroll.group_staff_payroll">
+                    <group>
+                        <group string="Classification">
+                            <field name="construction_workforce"/>
+                            <field name="construction_is_office_staff" readonly="1"/>
+                        </group>
+                        <!-- Office and engineer staff are paid from the staff sheet
+                             and never overtime, so nothing here applies to them and
+                             nothing is shown. -->
+                        <group string="Overtime &amp; Allowances" invisible="construction_is_office_staff">
+                            <!-- The HR Admin group may open office staff
+                                 but not see what they are paid: read() zeroes
+                                 the figures for them, and the form hides the
+                                 zeros rather than show them as pay. The salary
+                                 itself is on the Payroll tab (the contract),
+                                 once, and is not repeated here. -->
+                            <field name="construction_hide_salary" invisible="1"/>
+                            <field name="construction_overtime_eligible"/>
+                            <!-- All three are derived from the wage and the
+                                 company's factors, so they are shown and not
+                                 asked for. Shown rather than hidden because a
+                                 rate nobody can see is a rate nobody can
+                                 question - and these are what an overtime hour
+                                 is actually paid at. -->
+                            <field name="construction_hourly_rate" invisible="construction_hide_salary"/>
+                            <field name="construction_ot_rate_regular" invisible="construction_hide_salary"/>
+                            <field name="construction_ot_rate_off" invisible="construction_hide_salary"/>
+                            <field name="construction_rate_per_day" invisible="construction_hide_salary"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_list_construction_payroll" model="ir.ui.view">
+        <field name="name">hr.employee.list.construction.payroll</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="active" eval="True"/>
+        <field name="arch" type="xml">
+            <!-- Beside employee_type, which is the other thing on this list
+                 that says what kind of employee this is. job_title is not in
+                 the 19.0 list view at all. -->
+            <field name="employee_type" position="after">
+                <field name="construction_workforce" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_search_construction_payroll" model="ir.ui.view">
+        <field name="name">hr.employee.search.construction.payroll</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="active" eval="True"/>
+        <field name="arch" type="xml">
+            <filter name="group_manager" position="after">
+                <filter name="construction_group_workforce" string="Workforce"
+                        context="{'group_by': 'construction_workforce'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- The native employee, reachable from inside this app as well as from
+         Employees. The payroll team should not have to leave the payroll app
+         to open the record that now carries the workforce classification and
+         the overtime terms - and the same record, not a copy of it. -->
+    <record id="action_hr_employee_construction_payroll" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="hr.view_employee_filter"/>
+        <field name="context">{'search_default_construction_group_workforce': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No employee here yet</p>
+            <p>Employees are shared with the Employees app - this is the same
+               record, opened from payroll.</p>
+        </field>
+    </record>
+
+</odoo>
+
