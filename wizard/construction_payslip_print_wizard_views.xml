@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_construction_payslip_print_wizard_form" model="ir.ui.view">
+        <field name="name">construction.payslip.print.wizard.form</field>
+        <field name="model">construction.payslip.print.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print Payslip">
+                <group>
+                    <field name="payslip_ids" widget="many2many_tags" readonly="1"/>
+                    <field name="content" widget="radio"/>
+                    <field name="lang" widget="radio" options="{'horizontal': true}"/>
+                </group>
+                <footer>
+                    <button name="action_print" type="object" string="Print"
+                            class="btn-primary" icon="fa-print"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bound under Print, so a selection of payslips in the list goes
+         through the same two questions as the button on the form. -->
+    <record id="action_construction_payslip_print_wizard" model="ir.actions.act_window">
+        <field name="name">Payslip</field>
+        <field name="res_model">construction.payslip.print.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_construction_payslip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

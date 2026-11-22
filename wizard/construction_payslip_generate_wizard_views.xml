@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_construction_payslip_generate_wizard_form" model="ir.ui.view">
+        <field name="name">construction.payslip.generate.wizard.form</field>
+        <field name="model">construction.payslip.generate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate One Payslip">
+                <div class="alert alert-warning" role="alert" invisible="not existing_note">
+                    <field name="existing_note" nolabel="1" readonly="1"/>
+                </div>
+                <group>
+                    <group string="Who and When">
+                        <field name="employee_id" options="{'no_create': True}"/>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group string="How the Days Are Read">
+                        <field name="no_advance_days"/>
+                        <field name="is_office_staff" invisible="1"/>
+                        <field name="missing_checkout_is_absent" invisible="is_office_staff"/>
+                    </group>
+                </group>
+                <group string="Settle a Previous Period (optional)">
+                    <group>
+                        <field name="last_month_start"/>
+                        <field name="last_month_end"/>
+                    </group>
+                </group>
+                <p class="text-muted">
+                    The days, the absence, the overtime, the sick leave and the
+                    project split are worked out by the monthly attendance engine,
+                    on a sheet made for this employee alone - the labour sheet for
+                    labour and project staff, the staff sheet for Office / Engineer
+                    staff. The sheet stays on record behind the payslip.
+                </p>
+                <footer>
+                    <button name="action_generate" type="object" string="Generate"
+                            class="btn-primary" invisible="existing_note"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_payslip_generate_wizard" model="ir.actions.act_window">
+        <field name="name">Generate One Payslip</field>
+        <field name="res_model">construction.payslip.generate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
