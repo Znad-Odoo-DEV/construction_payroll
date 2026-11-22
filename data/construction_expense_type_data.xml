@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+      The kinds of payroll expense the module knows how to bill. The codes are
+      what the Python asks for and never change; the accounts are set per
+      company on each one, which is the whole point of them being records.
+
+      noupdate so an upgrade never overwrites the accounts somebody set.
+    -->
+    <data noupdate="1">
+
+        <record id="expense_type_leave_allowance" model="construction.expense.type">
+            <field name="name">Leave Allowance</field>
+            <field name="code">leave_allowance</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="expense_type_air_ticket" model="construction.expense.type">
+            <field name="name">Air Ticket</field>
+            <field name="code">air_ticket</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="expense_type_gratuity" model="construction.expense.type">
+            <field name="name">End of Service Gratuity</field>
+            <field name="code">gratuity</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="expense_type_basic" model="construction.expense.type">
+            <field name="name">Basic Salary</field>
+            <field name="code">basic</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="expense_type_housing" model="construction.expense.type">
+            <field name="name">Housing Allowance</field>
+            <field name="code">housing</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record id="expense_type_transport" model="construction.expense.type">
+            <field name="name">Transport Allowance</field>
+            <field name="code">transport</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <record id="expense_type_other" model="construction.expense.type">
+            <field name="name">Other Allowance</field>
+            <field name="code">other</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <record id="expense_type_overtime" model="construction.expense.type">
+            <field name="name">Overtime</field>
+            <field name="code">overtime</field>
+            <field name="sequence">80</field>
+        </record>
+
+        <record id="expense_type_adjustment" model="construction.expense.type">
+            <field name="name">Salary Adjustment</field>
+            <field name="code">adjustment</field>
+            <field name="sequence">85</field>
+        </record>
+
+        <record id="expense_type_advance" model="construction.expense.type">
+            <field name="name">Advance Salary</field>
+            <field name="code">advance</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="expense_type_staff_loan" model="construction.expense.type">
+            <field name="name">Staff Loan</field>
+            <field name="code">staff_loan</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <!--
+          Added with the salary batch's journal entry. The five above already
+          name the legs the salary itself is split into; these are the salary
+          attachments, plus the payable the net is credited to.
+
+          salary_payable is not an expense, but this model is only a map from a
+          key to an account per company, and the net has the same problem every
+          other leg has: a different number in every chart.
+        -->
+
+        <record id="expense_type_salary_payable" model="construction.expense.type">
+            <field name="name">Salaries Payable</field>
+            <field name="code">salary_payable</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="expense_type_salary_addition" model="construction.expense.type">
+            <field name="name">Salary Additions</field>
+            <field name="code">salary_addition</field>
+            <field name="sequence">110</field>
+        </record>
+
+        <record id="expense_type_salary_deduction" model="construction.expense.type">
+            <field name="name">Salary Deductions</field>
+            <field name="code">salary_deduction</field>
+            <field name="sequence">120</field>
+        </record>
+
+        <record id="expense_type_phone_bill" model="construction.expense.type">
+            <field name="name">Phone Bill Reimbursement</field>
+            <field name="code">phone_bill</field>
+            <field name="sequence">130</field>
+        </record>
+
+        <record id="expense_type_bonus" model="construction.expense.type">
+            <field name="name">Salary Bonus</field>
+            <field name="code">bonus</field>
+            <field name="sequence">140</field>
+        </record>
+
+        <record id="expense_type_sick_leave" model="construction.expense.type">
+            <field name="name">Sick Leave Reimbursement</field>
+            <field name="code">sick_leave</field>
+            <field name="sequence">150</field>
+        </record>
+
+        <record id="expense_type_medical_bill" model="construction.expense.type">
+            <field name="name">Medical Bill Reimbursement</field>
+            <field name="code">medical_bill</field>
+            <field name="sequence">160</field>
+        </record>
+
+        <record id="expense_type_penalty" model="construction.expense.type">
+            <field name="name">Penalty / Fine</field>
+            <field name="code">penalty</field>
+            <field name="sequence">170</field>
+        </record>
+
+    </data>
+</odoo>

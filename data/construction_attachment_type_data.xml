@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="attachment_type_salary_addition" model="construction.attachment.type">
+        <field name="name">Salary Addition</field>
+        <field name="kind">addition</field>
+            <field name="expense_type_id" ref="expense_type_salary_addition"/>
+    </record>
+
+    <record id="attachment_type_salary_deduction" model="construction.attachment.type">
+        <field name="name">Salary Deductions</field>
+        <field name="kind">deduction</field>
+            <field name="expense_type_id" ref="expense_type_salary_deduction"/>
+    </record>
+
+    <record id="attachment_type_phone_bill" model="construction.attachment.type">
+        <field name="name">Phone Bill Reimbursement</field>
+        <field name="kind">addition</field>
+            <field name="expense_type_id" ref="expense_type_phone_bill"/>
+    </record>
+
+    <record id="attachment_type_sick_leave" model="construction.attachment.type">
+        <field name="name">Sick Leave Reimbursement</field>
+        <field name="kind">addition</field>
+            <field name="expense_type_id" ref="expense_type_sick_leave"/>
+    </record>
+
+    <record id="attachment_type_medical_bill" model="construction.attachment.type">
+        <field name="name">Medical Bill Reimbursement</field>
+        <field name="kind">addition</field>
+            <field name="expense_type_id" ref="expense_type_medical_bill"/>
+    </record>
+
+    <record id="attachment_type_advance_deduction" model="construction.attachment.type">
+        <field name="name">Salary Advance-Deduction</field>
+        <field name="kind">deduction</field>
+            <field name="expense_type_id" ref="expense_type_advance"/>
+    </record>
+
+</odoo>
